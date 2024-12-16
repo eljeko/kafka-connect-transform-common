@@ -1,0 +1,28 @@
+name: Build and Release JAR
+
+on:
+  # manually trigger the workflow
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17" # Specify the Java version you need
+          distribution: "temurin" # Alternatively, you can use 'adopt', 'zulu', etc.
+
+      - name: Build with Maven
+        run: mvn clean package
+
+      - name: Archive JAR file
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-artifact
+          path: target/kafka-connect-transform-common-0.1.0-SNAPSHOT.jar
